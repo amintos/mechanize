@@ -66,8 +66,18 @@ else:
         return hashlib.md5(bytes).hexdigest()
 
 
+class FakeSocket(object):
+
+    def _reuse(self):
+        pass
+
+    def _drop(self):
+        pass
+
+
 try:
-    socket._fileobject("fake socket", close=True)
+    fake_socket = FakeSocket()
+    socket._fileobject(fake_socket, close=True)
 except TypeError:
     # python <= 2.4
     create_readline_wrapper = socket._fileobject
